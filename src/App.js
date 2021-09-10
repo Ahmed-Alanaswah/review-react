@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import Main from "./component/Main";
+import Form from "./component/FormCard";
+import Cards from "./component/Cards";
+import Data from "./component/Data.json";
+import FormCard from "./component/FormCard";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			Data: Data,
+			filteredData: Data,
+		};
+	}
+	filerData = (e) => {
+		let specialistStudent = e.target.value;
+		if (specialistStudent) {
+			let filterdData = Data.filter((card) => {
+				return card.specialist === specialistStudent;
+			});
+			this.setState({
+				filteredData: filterdData,
+			});
+		}
+		if (e.target.value === "all") {
+			let filterdData = Data.filter((card) => {
+				return card;
+			});
+			this.setState({
+				filteredData: filterdData,
+			});
+		}
+	};
+	render() {
+		return (
+			<>
+				<Form filerData={this.filerData} />
+				<Main filteredData={this.state.filteredData} />
+			</>
+		);
+	}
 }
 
 export default App;
